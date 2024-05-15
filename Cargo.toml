@@ -1,0 +1,6 @@
+[package]
+name = "virtio-spec"
+version = "0.0.0"
+edition = "2021"
+description = "Reserved."
+license = "MIT OR Apache-2.0"
