@@ -13,7 +13,11 @@ use crate::le64;
 #[doc(alias = "virtio_vsock_config")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(VolatileFieldAccess)]
 #[repr(C)]
@@ -26,9 +30,10 @@ pub struct Config {
 #[cfg_attr(
     feature = "zerocopy",
     derive(
-        zerocopy_derive::FromZeroes,
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
         zerocopy_derive::FromBytes,
-        zerocopy_derive::AsBytes
+        zerocopy_derive::IntoBytes,
     )
 )]
 #[derive(Default, Clone, Copy, Debug)]
@@ -132,9 +137,10 @@ pub enum EventId {
 #[cfg_attr(
     feature = "zerocopy",
     derive(
-        zerocopy_derive::FromZeroes,
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
         zerocopy_derive::FromBytes,
-        zerocopy_derive::AsBytes
+        zerocopy_derive::IntoBytes,
     )
 )]
 #[derive(Default, Clone, Copy, Debug)]

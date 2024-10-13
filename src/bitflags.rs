@@ -8,9 +8,10 @@ macro_rules! _bitflags_base {
         #[cfg_attr(
             feature = "zerocopy",
             derive(
-                zerocopy_derive::FromZeroes,
+                zerocopy_derive::KnownLayout,
+                zerocopy_derive::Immutable,
                 zerocopy_derive::FromBytes,
-                zerocopy_derive::AsBytes
+                zerocopy_derive::IntoBytes,
             )
         )]
         #[derive(Default, Clone, Copy, PartialEq, Eq, Hash)]

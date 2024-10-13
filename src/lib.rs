@@ -34,9 +34,10 @@
 //! - `nightly` enables nightly-only functionality.
 //! - `pci` enables the [`pci`] module for Virtio Over PCI via the [`pci_types`] crate.
 //! - `zerocopy` derives the following traits for most structs:
-//!   - [`zerocopy::FromZeroes`]
+//!   - [`zerocopy::KnownLayout`]
+//!   - [`zerocopy::Immutable`]
 //!   - [`zerocopy::FromBytes`]
-//!   - [`zerocopy::AsBytes`]
+//!   - [`zerocopy::IntoBytes`]
 //!
 //! # Implementation Status
 //!

@@ -19,7 +19,11 @@ use crate::{le16, le32, le64, DeviceConfigSpace, DeviceStatus, Le};
 #[doc(alias = "virtio_pci_cap")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
@@ -142,7 +146,11 @@ impl Cap {
 #[doc(alias = "virtio_pci_cap64")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
@@ -156,7 +164,11 @@ pub struct Cap64 {
 #[doc(alias = "virtio_pci_notify_cap")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
@@ -171,7 +183,11 @@ pub struct NotifyCap {
 #[doc(alias = "virtio_pci_cfg_cap")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(Clone, Copy, Debug)]
 #[repr(C)]
@@ -302,7 +318,11 @@ pub enum CapCfgType {
 #[doc(alias = "virtio_pci_common_cfg")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(VolatileFieldAccess)]
 #[repr(C)]

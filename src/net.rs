@@ -25,7 +25,11 @@ endian_bitflags! {
 #[doc(alias = "virtio_net_config")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(VolatileFieldAccess)]
 #[repr(C)]
@@ -102,9 +106,10 @@ virtio_bitflags! {
 #[cfg_attr(
     feature = "zerocopy",
     derive(
-        zerocopy_derive::FromZeroes,
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
         zerocopy_derive::FromBytes,
-        zerocopy_derive::AsBytes
+        zerocopy_derive::IntoBytes,
     )
 )]
 #[derive(Default, Clone, Copy, Debug)]
@@ -126,9 +131,10 @@ pub struct Hdr {
 #[cfg_attr(
     feature = "zerocopy",
     derive(
-        zerocopy_derive::FromZeroes,
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
         zerocopy_derive::FromBytes,
-        zerocopy_derive::AsBytes
+        zerocopy_derive::IntoBytes,
     )
 )]
 #[derive(Default, Clone, Copy, Debug)]

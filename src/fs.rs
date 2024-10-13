@@ -12,7 +12,11 @@ use super::le32;
 #[doc(alias = "virtio_fs_config")]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy_derive::FromZeroes, zerocopy_derive::FromBytes)
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+    )
 )]
 #[derive(VolatileFieldAccess)]
 #[repr(C)]
