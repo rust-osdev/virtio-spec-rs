@@ -1,6 +1,6 @@
 [package]
 name = "virtio-spec"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Martin Kröning <mkroening@posteo.net>"]
 edition = "2021"
 description = "Definitions from the Virtual I/O Device (VIRTIO) specification."
