@@ -289,6 +289,34 @@ macro_rules! feature_bits {
     () => {};
 }
 
+pub mod console {
+    use crate::le128;
+
+    feature_bits! {
+        /// Console Device Feature Bits
+        #[doc(alias = "VIRTIO_CONSOLE_F")]
+        pub struct F: le128 {
+            /// Configuration `cols` and `rows` are valid.
+            #[doc(alias = "VIRTIO_CONSOLE_F_SIZE")]
+            const SIZE = 1 << 0;
+
+            /// Device has support for multiple ports;
+            ///
+            /// `max_nr_ports` is valid and control virtqueues will be used.
+            #[doc(alias = "VIRTIO_CONSOLE_F_MULTIPORT")]
+            const MULTIPORT = 1 << 1;
+
+            /// Device has support for emergency write.
+            ///
+            /// Configuration field emerg_wr is valid.
+            #[doc(alias = "VIRTIO_CONSOLE_F_EMERG_WRITE")]
+            const EMERG_WRITE = 1 << 2;
+        }
+    }
+
+    impl crate::FeatureBits for F {}
+}
+
 pub mod net {
     use crate::le128;
 
