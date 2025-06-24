@@ -78,6 +78,15 @@ virtio_bitflags! {
 }
 
 /// Network Device Header GSO Type
+///
+/// <div class="warning">
+///
+/// This enum is not ABI-compatible with it's corresponding field.
+/// Use [`HdrGso::from`] for converting from an integer.
+///
+/// </div>
+///
+/// [`HdrGso::from`]: HdrGso#impl-From<u8>-for-HdrGso
 #[doc(alias = "VIRTIO_NET_HDR_GSO")]
 #[derive(IntoPrimitive, FromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
 #[non_exhaustive]
@@ -186,6 +195,15 @@ endian_bitflags! {
 }
 
 /// Hash Report
+///
+/// <div class="warning">
+///
+/// This enum is not ABI-compatible with it's corresponding field.
+/// Use [`HashReport::from`] for converting from an integer.
+///
+/// </div>
+///
+/// [`HashReport::from`]: HashReport#impl-From<u16>-for-HashReport
 #[doc(alias = "VIRTIO_NET_HASH_REPORT")]
 #[derive(IntoPrimitive, FromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
 #[non_exhaustive]

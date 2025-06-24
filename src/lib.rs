@@ -163,6 +163,15 @@ virtio_bitflags! {
 }
 
 /// Virtio Device IDs
+///
+/// <div class="warning">
+///
+/// This enum is not ABI-compatible with it's corresponding field.
+/// Use [`Id::from`] for converting from an integer.
+///
+/// </div>
+///
+/// [`Id::from`]: Id#impl-From<u8>-for-Id
 #[derive(IntoPrimitive, FromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
 #[non_exhaustive]
 #[repr(u8)]
