@@ -77,28 +77,41 @@ virtio_bitflags! {
     }
 }
 
-virtio_bitflags! {
-    /// Network Device Header GSO Type
-    #[doc(alias = "VIRTIO_NET_HDR_GSO")]
-    pub struct HdrGso: u8 {
-        #[doc(alias = "VIRTIO_NET_HDR_GSO_NONE")]
-        const NONE = 0;
+/// Network Device Header GSO Type
+///
+/// <div class="warning">
+///
+/// This enum is not ABI-compatible with it's corresponding field.
+/// Use [`HdrGso::from`] for converting from an integer.
+///
+/// </div>
+///
+/// [`HdrGso::from`]: HdrGso#impl-From<u8>-for-HdrGso
+#[doc(alias = "VIRTIO_NET_HDR_GSO")]
+#[derive(IntoPrimitive, FromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
+#[non_exhaustive]
+#[repr(u8)]
+pub enum HdrGso {
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_NONE")]
+    None = 0,
 
-        #[doc(alias = "VIRTIO_NET_HDR_GSO_TCPV4")]
-        const TCPV4 = 1;
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_TCPV4")]
+    Tcpv4 = 1,
 
-        #[doc(alias = "VIRTIO_NET_HDR_GSO_UDP")]
-        const UDP = 3;
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_UDP")]
+    Udp = 3,
 
-        #[doc(alias = "VIRTIO_NET_HDR_GSO_TCPV6")]
-        const TCPV6 = 4;
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_TCPV6")]
+    Tcpv6 = 4,
 
-        #[doc(alias = "VIRTIO_NET_HDR_GSO_UDP_L4")]
-        const UDP_L4 = 5;
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_UDP_L4")]
+    UdpL4 = 5,
 
-        #[doc(alias = "VIRTIO_NET_HDR_GSO_ECN")]
-        const ECN = 0x80;
-    }
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_ECN")]
+    Ecn = 0x80,
+
+    #[num_enum(catch_all)]
+    Unknown(u8),
 }
 
 /// Network Device Header
@@ -116,7 +129,7 @@ virtio_bitflags! {
 #[repr(C)]
 pub struct Hdr {
     pub flags: HdrF,
-    pub gso_type: HdrGso,
+    pub gso_type: u8,
     pub hdr_len: le16,
     pub gso_size: le16,
     pub csum_start: le16,
@@ -182,6 +195,15 @@ endian_bitflags! {
 }
 
 /// Hash Report
+///
+/// <div class="warning">
+///
+/// This enum is not ABI-compatible with it's corresponding field.
+/// Use [`HashReport::from`] for converting from an integer.
+///
+/// </div>
+///
+/// [`HashReport::from`]: HashReport#impl-From<u16>-for-HashReport
 #[doc(alias = "VIRTIO_NET_HASH_REPORT")]
 #[derive(IntoPrimitive, FromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
 #[non_exhaustive]

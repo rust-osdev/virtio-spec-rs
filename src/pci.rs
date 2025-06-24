@@ -270,6 +270,15 @@ impl CapData {
 }
 
 /// PCI Capability Configuration Type
+///
+/// <div class="warning">
+///
+/// This enum is not ABI-compatible with it's corresponding field.
+/// Use [`CapCfgType::from`] for converting from an integer.
+///
+/// </div>
+///
+/// [`CapCfgType::from`]: CapCfgType#impl-From<u8>-for-CapCfgType
 #[doc(alias = "VIRTIO_PCI_CAP")]
 #[derive(IntoPrimitive, FromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
 #[non_exhaustive]
