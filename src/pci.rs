@@ -11,7 +11,7 @@ use volatile_macro::VolatileFieldAccess;
 
 pub use crate::driver_notifications::NotificationData;
 use crate::volatile::WideVolatilePtr;
-use crate::{le16, le32, le64, DeviceConfigSpace, DeviceStatus, Le};
+use crate::{le16, le32, le64, DeviceConfigSpace, DeviceStatus};
 
 /// PCI Capability
 ///
@@ -234,11 +234,11 @@ impl CapData {
                 }
 
                 let offset_hi = unsafe { access.read(addr.address, addr.offset + 16) };
-                let offset_hi = Le(offset_hi);
+                let offset_hi = le32::from_ne(offset_hi);
                 let offset = le64::from([cap.offset, offset_hi]);
 
                 let length_hi = unsafe { access.read(addr.address, addr.offset + 20) };
-                let length_hi = Le(length_hi);
+                let length_hi = le32::from_ne(length_hi);
                 let length = le64::from([cap.length, length_hi]);
 
                 (offset, length)
@@ -253,7 +253,7 @@ impl CapData {
                 }
 
                 let notify_off_multiplier = unsafe { access.read(addr.address, addr.offset + 16) };
-                let notify_off_multiplier = Le(notify_off_multiplier);
+                let notify_off_multiplier = le32::from_ne(notify_off_multiplier);
 
                 Some(notify_off_multiplier)
             }
