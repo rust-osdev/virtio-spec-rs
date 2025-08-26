@@ -119,7 +119,7 @@ pub struct Cap {
 impl Cap {
     pub fn read(addr: PciCapabilityAddress, access: impl ConfigRegionAccess) -> Option<Self> {
         let data = unsafe { access.read(addr.address, addr.offset) };
-        let [cap_vndr, _cap_next, cap_len, _cfg_type] = data.to_ne_bytes();
+        let [cap_vndr, _cap_next, cap_len, _cfg_type] = data.to_le_bytes();
 
         if cap_vndr != 0x09 {
             return None;
@@ -135,6 +135,8 @@ impl Cap {
             unsafe { access.read(addr.address, addr.offset + 8) },
             unsafe { access.read(addr.address, addr.offset + 12) },
         ];
+
+        let data: [u32; 4] = data.map(u32::from_le);
 
         let this = unsafe { mem::transmute::<[u32; 4], Self>(data) };
 
