@@ -67,7 +67,7 @@
 //! | Block Device                      | ❌        |             |
 //! | Console Device                    | ✅        | [`console`] |
 //! | Entropy Device                    | ❌        |             |
-//! | Traditional Memory Balloon Device | ❌        |             |
+//! | Traditional Memory Balloon Device | ✅        | [`balloon`] |
 //! | SCSI Host Device                  | ❌        |             |
 //! | GPU Device                        | ❌        |             |
 //! | Input Device                      | ❌        |             |
@@ -95,6 +95,7 @@ mod bitflags;
 #[macro_use]
 pub mod volatile;
 pub mod console;
+pub mod balloon;
 #[cfg(any(feature = "mmio", feature = "pci"))]
 mod driver_notifications;
 mod features;
