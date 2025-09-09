@@ -524,6 +524,55 @@ pub mod vsock {
     impl crate::FeatureBits for F {}
 }
 
+pub mod balloon {
+    use crate::le128;
+
+    feature_bits! {
+        /// Traditional Memory Balloon Device Feature Bits
+        #[doc(alias = "VIRTIO_BALLOON_F")]
+        pub struct F: le128 {
+            /// Host has to be told before pages from the balloon are used.
+            #[doc(alias = "VIRTIO_BALLOON_F_MUST_TELL_HOST")]
+            const MUST_TELL_HOST = 1 << 0;
+
+            /// A virtqueue for reporting guest memory statistics is present.
+            #[doc(alias = "VIRTIO_BALLOON_F_STATS_VQ")]
+            const STATS_VQ = 1 << 1;
+
+            /// Deflate balloon on guest out of memory condition.
+            ///
+            /// <div class="warning">
+            ///
+            /// The specification is a bit confusing on this feature, see [oasis-tcs/virtio-spec#228](https://github.com/oasis-tcs/virtio-spec/issues/228).
+            ///
+            /// </div>
+            #[doc(alias = "VIRTIO_BALLOON_F_DEFLATE_ON_OOM")]
+            const DEFLATE_ON_OOM = 1 << 2;
+
+            /// The device has support for free page hinting.
+            /// A virtqueue for providing hints as to what memory is currently free is present.
+            /// Configuration field [`free_page_hint_cmd_id`](`crate::balloon::ConfigVolatileFieldAccess::free_page_hint_cmd_id`) is valid.
+            #[doc(alias = "VIRTIO_BALLOON_F_FREE_PAGE_HINT")]
+            const FREE_PAGE_HINT = 1 << 3;
+
+            /// A hint to the device, that the driver will immediately write
+            /// [`poison_val`] to pages after deflating them.
+            /// Configuration field [`poison_val`] is valid.
+            ///
+            /// [`poison_val`]: crate::balloon::ConfigVolatileFieldAccess::poison_val
+            #[doc(alias = "VIRTIO_BALLOON_F_PAGE_POISON")]
+            const PAGE_POISON = 1 << 4;
+
+            /// The device has support for free page reporting.
+            /// A virtqueue for reporting free guest memory is present.
+            #[doc(alias = "VIRTIO_BALLOON_F_PAGE_REPORTING")]
+            const PAGE_REPORTING = 1 << 5;
+        }
+    }
+
+    impl crate::FeatureBits for F {}
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
