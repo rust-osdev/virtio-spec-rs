@@ -402,6 +402,10 @@ pub mod net {
             #[doc(alias = "VIRTIO_NET_F_CTRL_VLAN")]
             const CTRL_VLAN = 1 << 19;
 
+            /// Control channel RX extra mode support.
+            #[doc(alias = "VIRTIO_NET_F_CTRL_RX_EXTRA")]
+            const CTRL_RX_EXTRA = 1 << 20;
+
             /// Driver can send gratuitous
             /// packets.
             #[doc(alias = "VIRTIO_NET_F_GUEST_ANNOUNCE")]
