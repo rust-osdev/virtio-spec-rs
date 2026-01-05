@@ -76,7 +76,7 @@ impl Avail {
             return None;
         }
 
-        if len % mem::size_of::<le16>() != 0 {
+        if !len.is_multiple_of(mem::size_of::<le16>()) {
             return None;
         }
 
