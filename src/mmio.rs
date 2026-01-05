@@ -9,6 +9,20 @@ pub use crate::driver_notifications::NotificationData;
 use crate::volatile::{OveralignedVolatilePtr, WideVolatilePtr};
 use crate::{le16, le32, DeviceConfigSpace, DeviceStatus, Id};
 
+/// The magic value for virtio-mmio.
+///
+/// See [`DeviceRegistersVolatileFieldAccess::magic_value`].
+///
+/// # Examples
+///
+/// ```
+/// # use virtio_spec as virtio;
+/// use virtio::le32;
+///
+/// assert_eq!(virtio::mmio::MAGIC_VALUE, le32::from_le_bytes(*b"virt"));
+/// ```
+pub const MAGIC_VALUE: le32 = le32::from_ne(0x74726976);
+
 /// MMIO Device Registers
 ///
 /// Use [`DeviceRegistersVolatileFieldAccess`] and [`DeviceRegistersVolatileWideFieldAccess`] to work with this struct.
@@ -144,6 +158,8 @@ device_register_impl! {
         ///
         /// 0x74726976
         /// (a Little Endian equivalent of the “virt” string).
+        ///
+        /// See [`MAGIC_VALUE`].
         #[doc(alias = "MagicValue")]
         #[offset(0x000)]
         #[access(ReadOnly)]
