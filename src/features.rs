@@ -13,6 +13,14 @@ where
     ///
     /// If `self` is a single feature and multiple features are returned, `self` requires only one of them.
     ///
+    /// # Driver Requirements
+    ///
+    /// The driver MUST NOT accept a feature which requires another feature which was not accepted.
+    ///
+    /// # Device Requirements
+    ///
+    /// The device MUST NOT offer a feature which requires another feature which was not offered.
+    ///
     /// # Examples
     ///
     /// ```
