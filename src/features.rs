@@ -1,11 +1,12 @@
 //! Feature Bits
 
 use crate::le128;
+use crate::sealed::Sealed;
 
 /// Feature Bits
 #[doc(alias = "VIRTIO_F")]
 pub trait FeatureBits:
-    bitflags::Flags<Bits = le128> + From<F> + Into<F> + AsRef<F> + AsMut<F>
+    bitflags::Flags<Bits = le128> + From<F> + Into<F> + AsRef<F> + AsMut<F> + Sealed
 {
     /// Returns the feature that this feature requires.
     ///
@@ -238,6 +239,8 @@ impl AsMut<F> for F {
 
 impl FeatureBits for F {}
 
+impl Sealed for F {}
+
 macro_rules! feature_bits {
     (
         $(#[$outer:meta])*
@@ -331,6 +334,8 @@ macro_rules! feature_bits {
                 unsafe { &mut *(self as *mut Self as *mut $crate::F) }
             }
         }
+
+        impl $crate::sealed::Sealed for $BitFlags {}
 
         feature_bits! {
             $($t)*

@@ -109,6 +109,10 @@ pub mod pvirtq;
 pub mod virtq;
 pub mod vsock;
 
+mod sealed {
+    pub trait Sealed {}
+}
+
 pub use endian_num::{Be, Le, be16, be32, be64, be128, le16, le32, le64, le128};
 use num_enum::{FromPrimitive, IntoPrimitive, TryFromPrimitive};
 
