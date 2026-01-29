@@ -421,6 +421,14 @@ pub mod net {
             #[doc(alias = "VIRTIO_NET_F_CTRL_MAC_ADDR")]
             const CTRL_MAC_ADDR = 1 << 23;
 
+            /// Driver can receive USOv4 packets.
+            #[doc(alias = "VIRTIO_NET_F_GUEST_USO4")]
+            const GUEST_USO4 = 1 << 54;
+
+            /// Driver can receive USOv6 packets.
+            #[doc(alias = "VIRTIO_NET_F_GUEST_USO6")]
+            const GUEST_USO6 = 1 << 55;
+
             /// Device can receive USO packets. Unlike UFO
             /// (fragmenting the packet) the USO splits large UDP packet
             /// to several segments when each of these smaller packets has UDP header.
@@ -469,6 +477,8 @@ pub mod net {
                     Self::GUEST_TSO6 => Self::GUEST_CSUM,
                     Self::GUEST_ECN => Self::GUEST_TSO4 | Self::GUEST_TSO6,
                     Self::GUEST_UFO => Self::GUEST_CSUM,
+                    Self::GUEST_USO4 => Self::GUEST_CSUM,
+                    Self::GUEST_USO6 => Self::GUEST_CSUM,
                     Self::HOST_TSO4 => Self::CSUM,
                     Self::HOST_TSO6 => Self::CSUM,
                     Self::HOST_ECN => Self::HOST_TSO4 | Self::HOST_TSO6,
