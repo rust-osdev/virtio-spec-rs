@@ -4,10 +4,8 @@ use crate::le128;
 
 /// Feature Bits
 #[doc(alias = "VIRTIO_F")]
-pub trait FeatureBits: bitflags::Flags<Bits = le128>
-where
-    Self: From<F> + AsRef<F> + AsMut<F>,
-    F: From<Self> + AsRef<Self> + AsMut<Self>,
+pub trait FeatureBits:
+    bitflags::Flags<Bits = le128> + From<F> + Into<F> + AsRef<F> + AsMut<F>
 {
     /// Returns the feature that this feature requires.
     ///
