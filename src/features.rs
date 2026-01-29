@@ -60,6 +60,50 @@ where
             .filter(|requirements| !requirements.is_empty())
             .all(|requirements| self.intersects(requirements))
     }
+
+    /// Returns the feature that this feature recommends.
+    ///
+    /// If `self` is a single feature and multiple features are returned, `self` recommendns only one of them.
+    ///
+    /// # Driver Requirements
+    ///
+    /// The driver SHOULD NOT accept a feature which recommends another feature which was not accepted.
+    ///
+    /// # Device Requirements
+    ///
+    /// The device SHOULD NOT offer a feature which recommends another feature which was not offered.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use virtio_spec as virtio;
+    /// use virtio::FeatureBits;
+    ///
+    /// assert_eq!(
+    ///     virtio::net::F::HASH_REPORT.recommendations(),
+    ///     virtio::net::F::CTRL_VQ
+    /// );
+    /// ```
+    fn recommendations(&self) -> Self {
+        Self::empty()
+    }
+
+    /// Returns `true` if all internal feature recommendations are satisfied.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use virtio_spec as virtio;
+    /// use virtio::FeatureBits;
+    ///
+    /// assert!((virtio::net::F::HASH_REPORT | virtio::net::F::CTRL_VQ).recommendations_satisfied());
+    /// ```
+    fn recommendations_satisfied(&self) -> bool {
+        self.iter()
+            .map(|feature| feature.recommendations())
+            .filter(|recommendations| !recommendations.is_empty())
+            .all(|recommendations| self.intersects(recommendations))
+    }
 }
 
 endian_bitflags! {
@@ -495,6 +539,21 @@ pub mod net {
             }
 
             requirements
+        }
+
+        fn recommendations(&self) -> Self {
+            let mut recommendations = Self::empty();
+
+            for feature in self.iter() {
+                let recommendation = match feature {
+                    Self::HASH_REPORT => Self::CTRL_VQ,
+                    Self::CTRL_RX_EXTRA => Self::CTRL_VQ,
+                    _ => Self::empty(),
+                };
+                recommendations.insert(recommendation);
+            }
+
+            recommendations
         }
     }
 }
