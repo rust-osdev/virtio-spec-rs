@@ -84,7 +84,7 @@
 //! | PMEM Device                       | ❌        |             |
 
 #![cfg_attr(not(test), no_std)]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![cfg_attr(feature = "nightly", feature(allocator_api))]
 
 #[cfg(feature = "alloc")]
