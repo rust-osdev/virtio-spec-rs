@@ -14,7 +14,7 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
-allocator-api2 = { version = "0.3", default-features = false, features = ["alloc"], optional = true }
+allocator-api2 = { version = "0.4", default-features = false, features = ["alloc"], optional = true }
 bitfield-struct = "0.12"
 bitflags = "2"
 endian-num = { version = "0.2", features = ["bitflags", "linux-types"] }
