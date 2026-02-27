@@ -2,10 +2,10 @@
 
 use core::marker::PhantomData;
 
-use volatile::access::{Readable, Writable};
 use volatile::VolatilePtr;
+use volatile::access::{Readable, Writable};
 
-use crate::{be32, be64, le16, le32, le64, DeviceStatus, Id};
+use crate::{DeviceStatus, Id, be32, be64, le16, le32, le64};
 
 /// A wide volatile pointer for 64-bit fields.
 ///
@@ -295,7 +295,7 @@ impl OveralignedField<le32> for crate::mmio::InterruptStatus {
 }
 
 mod private {
-    use crate::{le16, le32, DeviceStatus, Id};
+    use crate::{DeviceStatus, Id, le16, le32};
 
     pub trait Sealed<T> {}
 

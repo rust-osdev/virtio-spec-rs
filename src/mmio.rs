@@ -2,12 +2,12 @@
 
 use core::mem;
 
-use volatile::access::{ReadOnly, ReadWrite, Readable, RestrictAccess, WriteOnly};
 use volatile::VolatilePtr;
+use volatile::access::{ReadOnly, ReadWrite, Readable, RestrictAccess, WriteOnly};
 
 pub use crate::driver_notifications::NotificationData;
 use crate::volatile::{OveralignedVolatilePtr, WideVolatilePtr};
-use crate::{le16, le32, DeviceConfigSpace, DeviceStatus, Id};
+use crate::{DeviceConfigSpace, DeviceStatus, Id, le16, le32};
 
 /// The magic value for virtio-mmio.
 ///

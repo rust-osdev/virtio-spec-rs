@@ -2,7 +2,7 @@
 name = "virtio-spec"
 version = "0.3.2"
 authors = ["Martin Kröning <mkroening@posteo.net>"]
-edition = "2021"
+edition = "2024"
 description = "Definitions from the Virtual I/O Device (VIRTIO) specification."
 repository = "https://github.com/rust-osdev/virtio-spec-rs"
 license = "MIT OR Apache-2.0"

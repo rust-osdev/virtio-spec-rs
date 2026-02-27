@@ -2,7 +2,7 @@
 
 use bitfield_struct::bitfield;
 
-use crate::{le16, le32, le64, virtq, RingEventFlags};
+use crate::{RingEventFlags, le16, le32, le64, virtq};
 
 /// Packed Virtqueue Descriptor
 #[doc(alias = "pvirtq_desc")]
