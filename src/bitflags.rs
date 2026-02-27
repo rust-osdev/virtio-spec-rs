@@ -84,7 +84,7 @@ macro_rules! virtio_bitflags {
 macro_rules! impl_fmt {
     ($Trait:ident for $SelfT:ty) => {
         impl ::core::fmt::$Trait for $SelfT {
-            fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+            fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
                 self.0.fmt(f)
             }
         }

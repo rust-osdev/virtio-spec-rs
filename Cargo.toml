@@ -31,3 +31,6 @@ mmio = []
 nightly = []
 pci = ["dep:pci_types"]
 zerocopy = ["dep:zerocopy", "dep:zerocopy-derive", "endian-num/zerocopy"]
+
+[lints.rust]
+rust_2018_idioms = "warn"
