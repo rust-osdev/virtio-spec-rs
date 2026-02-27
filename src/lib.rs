@@ -109,10 +109,10 @@ pub mod pvirtq;
 pub mod virtq;
 pub mod vsock;
 
-pub use endian_num::{be128, be16, be32, be64, le128, le16, le32, le64, Be, Le};
+pub use endian_num::{Be, Le, be16, be32, be64, be128, le16, le32, le64, le128};
 use num_enum::{FromPrimitive, IntoPrimitive, TryFromPrimitive};
 
-pub use self::features::{FeatureBits, F};
+pub use self::features::{F, FeatureBits};
 
 virtio_bitflags! {
     /// Device Status Field
@@ -358,10 +358,10 @@ pub trait DeviceConfigSpace: Sized {
     ///
     /// ```rust
     /// # use virtio_spec as virtio;
-    /// use virtio::net::ConfigVolatileFieldAccess;
     /// use virtio::DeviceConfigSpace;
-    /// use volatile::access::ReadOnly;
+    /// use virtio::net::ConfigVolatileFieldAccess;
     /// use volatile::VolatilePtr;
+    /// use volatile::access::ReadOnly;
     ///
     /// fn read_mac(
     ///     common_cfg: VolatilePtr<'_, virtio::pci::CommonCfg, ReadOnly>,

@@ -4,7 +4,7 @@
 mod alloc;
 
 use core::alloc::Layout;
-use core::ptr::{addr_of_mut, NonNull};
+use core::ptr::{NonNull, addr_of_mut};
 use core::{mem, ptr};
 
 use crate::{le16, le32, le64};

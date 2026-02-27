@@ -3,15 +3,15 @@
 use core::mem;
 
 use num_enum::{FromPrimitive, IntoPrimitive};
-use pci_types::capability::PciCapabilityAddress;
 use pci_types::ConfigRegionAccess;
-use volatile::access::{ReadOnly, ReadWrite, Readable, RestrictAccess};
+use pci_types::capability::PciCapabilityAddress;
 use volatile::VolatilePtr;
+use volatile::access::{ReadOnly, ReadWrite, Readable, RestrictAccess};
 use volatile_macro::VolatileFieldAccess;
 
 pub use crate::driver_notifications::NotificationData;
 use crate::volatile::WideVolatilePtr;
-use crate::{le16, le32, le64, DeviceConfigSpace, DeviceStatus};
+use crate::{DeviceConfigSpace, DeviceStatus, le16, le32, le64};
 
 /// PCI Capability
 ///
