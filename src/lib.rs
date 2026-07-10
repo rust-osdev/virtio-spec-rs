@@ -66,7 +66,7 @@
 //! | Network Device                    | ✅        | [`net`]     |
 //! | Block Device                      | ❌        |             |
 //! | Console Device                    | ✅        | [`console`] |
-//! | Entropy Device                    | ❌        |             |
+//! | Entropy Device                    | ✅        | [`entropy`] |
 //! | Traditional Memory Balloon Device | ✅        | [`balloon`] |
 //! | SCSI Host Device                  | ❌        |             |
 //! | GPU Device                        | ❌        |             |
@@ -98,6 +98,7 @@ pub mod balloon;
 pub mod console;
 #[cfg(any(feature = "mmio", feature = "pci"))]
 mod driver_notifications;
+pub mod entropy;
 mod features;
 pub mod fs;
 #[cfg(feature = "mmio")]

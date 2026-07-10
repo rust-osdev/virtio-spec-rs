@@ -369,6 +369,19 @@ pub mod console {
     impl crate::FeatureBits for F {}
 }
 
+pub mod entropy {
+    use crate::le128;
+
+    feature_bits! {
+        /// Entropy Device Feature Bits
+        #[doc(alias = "VIRTIO_ENTROPY_F")]
+        pub struct F: le128 {
+        }
+    }
+
+    impl crate::FeatureBits for F {}
+}
+
 pub mod net {
     use crate::le128;
 
