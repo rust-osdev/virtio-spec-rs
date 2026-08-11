@@ -185,7 +185,7 @@ pub enum Id {
     /// reserved (invalid)
     Reserved = 0,
 
-    /// network card
+    /// network device
     Net = 1,
 
     /// block device
@@ -227,7 +227,7 @@ pub enum Id {
     /// GPU device
     Gpu = 16,
 
-    /// Timer/Clock device
+    /// RTC (Real Time Clock) device
     Clock = 17,
 
     /// Input device
@@ -251,7 +251,7 @@ pub enum Id {
     /// Memory device
     Mem = 24,
 
-    /// Audio device
+    /// Sound device
     Sound = 25,
 
     /// file system device
@@ -301,6 +301,27 @@ pub enum Id {
 
     /// RDMA device
     Rdma = 42,
+
+    /// Camera device
+    Camera = 43,
+
+    /// ISM device
+    Ism = 44,
+
+    /// SPI controller
+    Spi = 45,
+
+    /// TEE device
+    Tee = 46,
+
+    /// CPU balloon device
+    CpuBalloon = 47,
+
+    /// Media device
+    Media = 48,
+
+    /// USB controller
+    Usb = 49,
 
     /// Unknown device
     #[num_enum(catch_all)]
