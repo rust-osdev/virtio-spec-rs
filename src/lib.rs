@@ -207,7 +207,7 @@ pub enum Id {
 
     /// ioMemory
     #[doc(alias = "VIRTIO_ID_IOMEM")]
-    IoMem = 6,
+    Iomem = 6,
 
     /// rpmsg
     #[doc(alias = "VIRTIO_ID_RPMSG")]
