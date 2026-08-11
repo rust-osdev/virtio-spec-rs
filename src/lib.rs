@@ -61,27 +61,27 @@
 //!
 //! ## Device Types
 //!
-//! | Device Type                       | Available | Module      |
-//! | --------------------------------- | --------- | ----------- |
-//! | Network Device                    | ✅        | [`net`]     |
-//! | Block Device                      | ❌        |             |
-//! | Console Device                    | ✅        | [`console`] |
-//! | Entropy Device                    | ❌        |             |
-//! | Traditional Memory Balloon Device | ✅        | [`balloon`] |
-//! | SCSI Host Device                  | ❌        |             |
-//! | GPU Device                        | ❌        |             |
-//! | Input Device                      | ❌        |             |
-//! | Crypto Device                     | ❌        |             |
-//! | Socket Device                     | ✅        | [`vsock`]   |
-//! | File System Device                | ✅        | [`fs`]      |
-//! | RPMB Device                       | ❌        |             |
-//! | IOMMU Device                      | ❌        |             |
-//! | Sound Device                      | ❌        |             |
-//! | Memory Device                     | ❌        |             |
-//! | I2C Adapter Device                | ❌        |             |
-//! | SCMI Device                       | ❌        |             |
-//! | GPIO Device                       | ❌        |             |
-//! | PMEM Device                       | ❌        |             |
+//! | Device Type                       | Available | Module        |
+//! | --------------------------------- | --------- | ------------- |
+//! | Network Device                    | ✅        | [`net`]       |
+//! | Block Device                      | ❌        |               |
+//! | Console Device                    | ✅        | [`console`]   |
+//! | Entropy Device                    | ✅        | None required |
+//! | Traditional Memory Balloon Device | ✅        | [`balloon`]   |
+//! | SCSI Host Device                  | ❌        |               |
+//! | GPU Device                        | ❌        |               |
+//! | Input Device                      | ❌        |               |
+//! | Crypto Device                     | ❌        |               |
+//! | Socket Device                     | ✅        | [`vsock`]     |
+//! | File System Device                | ✅        | [`fs`]        |
+//! | RPMB Device                       | ❌        |               |
+//! | IOMMU Device                      | ❌        |               |
+//! | Sound Device                      | ❌        |               |
+//! | Memory Device                     | ❌        |               |
+//! | I2C Adapter Device                | ❌        |               |
+//! | SCMI Device                       | ❌        |               |
+//! | GPIO Device                       | ❌        |               |
+//! | PMEM Device                       | ❌        |               |
 
 #![cfg_attr(not(test), no_std)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
