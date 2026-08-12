@@ -174,6 +174,23 @@ endian_bitflags! {
         /// See _Basic Facilities of a Virtio Device / Virtqueues / Virtqueue Reset_.
         #[doc(alias = "VIRTIO_F_RING_RESET")]
         const RING_RESET = 1 << 40;
+
+        /// This feature indicates that the device exposes one or more
+        /// administration virtqueues.
+        /// At the moment this feature is only supported for devices using
+        /// _Virtio Transport Options / Virtio Over PCI Bus_
+        /// as the transport and is reserved for future use for
+        /// devices using other transports (see
+        /// _Basic Facilities of a Virtio Device / Feature Bits_ for
+        /// handling features reserved for future use.
+        #[doc(alias = "VIRTIO_F_ADMIN_VQ")]
+        const ADMIN_VQ = 1 << 41;
+
+        /// This feature indicates that the driver can
+        /// suspend the device by set the SUSPEND bit to 1.
+        /// See _Basic Facilities of a Virtio Device / Device Status Field_.
+        #[doc(alias = "VIRTIO_F_SUSPEND")]
+        const SUSPEND = 1 << 43;
     }
 }
 
@@ -245,6 +262,12 @@ macro_rules! feature_bits {
 
                 /// Device-independent Bit. See [`virtio::F::RING_RESET`](crate::F::RING_RESET).
                 const RING_RESET = $crate::F::RING_RESET.bits().to_ne();
+
+                /// Device-independent Bit. See [`virtio::F::ADMIN_VQ`](crate::F::ADMIN_VQ).
+                const ADMIN_VQ = $crate::F::ADMIN_VQ.bits().to_ne();
+
+                /// Device-independent Bit. See [`virtio::F::SUSPEND`](crate::F::SUSPEND).
+                const SUSPEND = $crate::F::SUSPEND.bits().to_ne();
             }
         }
 
