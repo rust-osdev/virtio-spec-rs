@@ -145,22 +145,22 @@ endian_bitflags! {
         /// This feature indicates
         /// that the driver passes extra data (besides identifying the virtqueue)
         /// in its device notifications.
-        /// See _Virtqueues / Driver notifications_ _Virtqueues / Driver notifications_.
+        /// See _Basic Facilities of a Virtio Device / Driver notifications_.
         #[doc(alias = "VIRTIO_F_NOTIFICATION_DATA")]
         const NOTIFICATION_DATA = 1 << 38;
 
         /// This feature indicates that the driver
         /// uses the data provided by the device as a virtqueue identifier in available
         /// buffer notifications.
-        /// As mentioned in section _Virtqueues / Driver notifications_, when the
+        /// As mentioned in section _Basic Facilities of a Virtio Device / Driver notifications_, when the
         /// driver is required to send an available buffer notification to the device, it
-        /// sends the virtqueue number to be notified. The method of delivering
+        /// sends the virtqueue index to be notified. The method of delivering
         /// notifications is transport specific.
         /// With the PCI transport, the device can optionally provide a per-virtqueue value
-        /// for the driver to use in driver notifications, instead of the virtqueue number.
+        /// for the driver to use in driver notifications, instead of the virtqueue index.
         /// Some devices may benefit from this flexibility by providing, for example,
         /// an internal virtqueue identifier, or an internal offset related to the
-        /// virtqueue number.
+        /// virtqueue index.
         ///
         /// This feature indicates the availability of such value. The definition of the
         /// data to be provided in driver notification and the delivery method is
