@@ -156,6 +156,10 @@ virtio_bitflags! {
         /// features it understands, and feature negotiation is complete.
         const FEATURES_OK = 8;
 
+        /// When [`virtio::F::SUSPEND`] is negotiated, indicates that the
+        /// device has been suspended by the driver.
+        const SUSPEND = 16;
+
         /// Indicates that the device has experienced
         /// an error from which it can't recover.
         const DEVICE_NEEDS_RESET = 64;
