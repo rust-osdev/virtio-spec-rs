@@ -137,10 +137,10 @@ pub struct Hdr {
     pub num_buffers: le16,
 }
 
-/// Network Device Header Hash Report
+/// Network Device Header with Hash Info
 ///
 /// Only if VIRTIO_NET_F_HASH_REPORT negotiated
-#[doc(alias = "virtio_net_hdr")]
+#[doc(alias = "virtio_net_hdr_hash")]
 #[cfg_attr(
     feature = "zerocopy",
     derive(
@@ -152,12 +152,10 @@ pub struct Hdr {
 )]
 #[derive(Default, Clone, Copy, Debug)]
 #[repr(C)]
-pub struct HdrHashReport {
-    /// Only if VIRTIO_NET_F_HASH_REPORT negotiated
+pub struct HdrHash {
+    pub hdr: Hdr,
     pub hash_value: le32,
-    /// Only if VIRTIO_NET_F_HASH_REPORT negotiated
     pub hash_report: le16,
-    /// Only if VIRTIO_NET_F_HASH_REPORT negotiated
     pub padding_reserved: le16,
 }
 
