@@ -60,6 +60,9 @@ pub struct Config {
 
     #[access(ReadOnly)]
     supported_hash_types: le32,
+
+    #[access(ReadOnly)]
+    supported_tunnel_types: le32,
 }
 
 virtio_bitflags! {
@@ -74,6 +77,18 @@ virtio_bitflags! {
 
         #[doc(alias = "VIRTIO_NET_HDR_F_RSC_INFO")]
         const RSC_INFO = 4;
+
+        #[doc(alias = "VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM")]
+        const UDP_TUNNEL_CSUM = 8;
+
+        #[doc(alias = "VIRTIO_NET_HDR_F_SECURITY")]
+        const SECURITY = 16;
+
+        #[doc(alias = "VIRTIO_NET_HDR_F_SECURITY_ERR")]
+        const SECURITY_ERR = 32;
+
+        #[doc(alias = "VIRTIO_NET_HDR_F_SECURITY_SA_SOFT_EXPIRY_WARN")]
+        const SECURITY_SA_SOFT_EXPIRY_WARN = 64;
     }
 }
 
@@ -106,6 +121,12 @@ pub enum HdrGso {
 
     #[doc(alias = "VIRTIO_NET_HDR_GSO_UDP_L4")]
     UdpL4 = 5,
+
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4")]
+    UdpTunnelIpv4 = 0x20,
+
+    #[doc(alias = "VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6")]
+    UdpTunnelIpv6 = 0x40,
 
     #[doc(alias = "VIRTIO_NET_HDR_GSO_ECN")]
     Ecn = 0x80,
@@ -157,6 +178,47 @@ pub struct HdrHash {
     pub hash_value: le32,
     pub hash_report: le16,
     pub padding_reserved: le16,
+}
+
+/// Network Device Header with Hash and Tunnel info
+///
+/// Only if VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO or VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO negotiated
+#[doc(alias = "virtio_net_hdr_hash_tunnel")]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+        zerocopy_derive::IntoBytes,
+    )
+)]
+#[derive(Default, Clone, Copy, Debug)]
+#[repr(C)]
+pub struct HdrHashTunnel {
+    pub hash_hdr: HdrHash,
+    pub outer_th_offset: le16,
+    pub inner_nh_offset: le16,
+}
+
+/// Network Device Header with Hash, Tunnel, and Outer Network info
+///
+/// Only if VIRTIO_NET_F_OUT_NET_HEADER negotiated
+#[doc(alias = "virtio_net_hdr_hash_tunnel_out_net_hdr")]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy_derive::KnownLayout,
+        zerocopy_derive::Immutable,
+        zerocopy_derive::FromBytes,
+        zerocopy_derive::IntoBytes,
+    )
+)]
+#[derive(Default, Clone, Copy, Debug)]
+#[repr(C)]
+pub struct HdrHashTunnelOutNetHdr {
+    pub outer_nh_offset: le16,
+    pub padding_reserved_2: [u8; 6],
 }
 
 endian_bitflags! {
