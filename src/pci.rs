@@ -348,10 +348,11 @@ pub struct CommonCfg {
     /// Driver Feature Bits selected by `driver_feature_select`.
     driver_feature: le32,
 
-    /// The driver sets the Configuration Vector for MSI-X.
+    /// Set by the driver to the MSI-X vector for configuration change notifications.
     config_msix_vector: le16,
 
     /// The device specifies the maximum number of virtqueues supported here.
+    /// This excludes administration virtqueues if any are supported.
     #[access(ReadOnly)]
     num_queues: le16,
 
@@ -373,7 +374,7 @@ pub struct CommonCfg {
     /// A 0 means the queue is unavailable.
     queue_size: le16,
 
-    /// The driver uses this to specify the queue vector for MSI-X.
+    /// Set by the driver to the MSI-X vector for virtqueue notifications.
     queue_msix_vector: le16,
 
     /// The driver uses this to selectively prevent the device from executing requests from this virtqueue.
@@ -411,23 +412,25 @@ pub struct CommonCfg {
     queue_device_high: le32,
 
     /// This field exists only if [`VIRTIO_F_NOTIF_CONFIG_DATA`] has been negotiated.
-    /// The driver will use this value to put it in the 'virtqueue number' field
-    /// in the available buffer notification structure.
+    /// The driver will use this value when driver sends available buffer
+    /// notification to the device.
     /// See section _Virtio Transport Options / Virtio Over PCI Bus / PCI-specific Initialization And Device Operation / Available Buffer Notifications_.
     ///
     /// <div class="warning">
     ///
     /// This field provides the device with flexibility to determine how virtqueues
     /// will be referred to in available buffer notifications.
-    /// In a trivial case the device can set `queue_notify_data`=vqn. Some devices
-    /// may benefit from providing another value, for example an internal virtqueue
-    /// identifier, or an internal offset related to the virtqueue number.
+    /// In a trivial case the device can set `queue_notif_config_data` to
+    /// the virtqueue index. Some devices may benefit from providing another value,
+    /// for example an internal virtqueue identifier, or an internal offset
+    /// related to the virtqueue index.
     ///
     /// </div>
     ///
     /// [`VIRTIO_F_NOTIF_CONFIG_DATA`]: crate::F::NOTIF_CONFIG_DATA
+    #[doc(alias = "queue_notify_data")]
     #[access(ReadOnly)]
-    queue_notify_data: le16,
+    queue_notif_config_data: le16,
 
     /// The driver uses this to selectively reset the queue.
     /// This field exists only if [`VIRTIO_F_RING_RESET`] has been
@@ -435,6 +438,23 @@ pub struct CommonCfg {
     ///
     /// [`VIRTIO_F_RING_RESET`]: crate::F::RING_RESET
     queue_reset: le16,
+
+    /// The device uses this to report the index of the first administration virtqueue.
+    /// This field is valid only if VIRTIO_F_ADMIN_VQ has been negotiated.
+    #[access(ReadOnly)]
+    admin_queue_index: le16,
+
+    /// The device uses this to report the number of the
+    /// supported administration virtqueues.
+    /// Virtqueues with index
+    /// between `admin_queue_index` and (`admin_queue_index` +
+    /// `admin_queue_num` - 1) inclusive serve as administration
+    /// virtqueues.
+    /// The value 0 indicates no supported administration virtqueues.
+    /// This field is valid only if VIRTIO_F_ADMIN_VQ has been
+    /// negotiated.
+    #[access(ReadOnly)]
+    admin_queue_num: le16,
 }
 
 impl_wide_field_access! {
