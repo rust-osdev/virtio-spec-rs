@@ -8,9 +8,7 @@ use crate::sealed::Sealed;
 pub trait FeatureBits:
     bitflags::Flags<Bits = le128> + From<F> + Into<F> + AsRef<F> + AsMut<F> + Sealed
 {
-    /// Returns the feature that this feature requires.
-    ///
-    /// If `self` is a single feature and multiple features are returned, `self` requires only one of them.
+    /// Returns `true` if all internal feature requirements are satisfied.
     ///
     /// # Driver Requirements
     ///
@@ -26,27 +24,6 @@ pub trait FeatureBits:
     /// # use virtio_spec as virtio;
     /// use virtio::FeatureBits;
     ///
-    /// assert_eq!(
-    ///     virtio::net::F::GUEST_TSO4.requirements(),
-    ///     virtio::net::F::GUEST_CSUM
-    /// );
-    /// assert_eq!(
-    ///     virtio::net::F::GUEST_ECN.requirements(),
-    ///     virtio::net::F::GUEST_TSO4 | virtio::net::F::GUEST_TSO6
-    /// );
-    /// ```
-    fn requirements(&self) -> Self {
-        Self::empty()
-    }
-
-    /// Returns `true` if all internal feature requirements are satisfied.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use virtio_spec as virtio;
-    /// use virtio::FeatureBits;
-    ///
     /// assert!((virtio::net::F::GUEST_TSO4 | virtio::net::F::GUEST_CSUM).requirements_satisfied());
     /// assert!(
     ///     (virtio::net::F::GUEST_ECN | virtio::net::F::GUEST_TSO4 | virtio::net::F::GUEST_CSUM)
@@ -54,15 +31,10 @@ pub trait FeatureBits:
     /// );
     /// ```
     fn requirements_satisfied(&self) -> bool {
-        self.iter()
-            .map(|feature| feature.requirements())
-            .filter(|requirements| !requirements.is_empty())
-            .all(|requirements| self.intersects(requirements))
+        true
     }
 
-    /// Returns the feature that this feature recommends.
-    ///
-    /// If `self` is a single feature and multiple features are returned, `self` recommendns only one of them.
+    /// Returns `true` if all internal feature recommendations are satisfied.
     ///
     /// # Driver Requirements
     ///
@@ -78,30 +50,10 @@ pub trait FeatureBits:
     /// # use virtio_spec as virtio;
     /// use virtio::FeatureBits;
     ///
-    /// assert_eq!(
-    ///     virtio::net::F::HASH_REPORT.recommendations(),
-    ///     virtio::net::F::CTRL_VQ
-    /// );
-    /// ```
-    fn recommendations(&self) -> Self {
-        Self::empty()
-    }
-
-    /// Returns `true` if all internal feature recommendations are satisfied.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// # use virtio_spec as virtio;
-    /// use virtio::FeatureBits;
-    ///
     /// assert!((virtio::net::F::HASH_REPORT | virtio::net::F::CTRL_VQ).recommendations_satisfied());
     /// ```
     fn recommendations_satisfied(&self) -> bool {
-        self.iter()
-            .map(|feature| feature.recommendations())
-            .filter(|recommendations| !recommendations.is_empty())
-            .all(|recommendations| self.intersects(recommendations))
+        true
     }
 }
 
@@ -523,50 +475,36 @@ pub mod net {
     }
 
     impl crate::FeatureBits for F {
-        fn requirements(&self) -> Self {
-            let mut requirements = Self::empty();
-
-            for feature in self.iter() {
-                let requirement = match feature {
-                    Self::GUEST_TSO4 => Self::GUEST_CSUM,
-                    Self::GUEST_TSO6 => Self::GUEST_CSUM,
-                    Self::GUEST_ECN => Self::GUEST_TSO4 | Self::GUEST_TSO6,
-                    Self::GUEST_UFO => Self::GUEST_CSUM,
-                    Self::GUEST_USO4 => Self::GUEST_CSUM,
-                    Self::GUEST_USO6 => Self::GUEST_CSUM,
-                    Self::HOST_TSO4 => Self::CSUM,
-                    Self::HOST_TSO6 => Self::CSUM,
-                    Self::HOST_ECN => Self::HOST_TSO4 | Self::HOST_TSO6,
-                    Self::HOST_UFO => Self::CSUM,
-                    Self::HOST_USO => Self::CSUM,
-                    Self::CTRL_RX => Self::CTRL_VQ,
-                    Self::CTRL_VLAN => Self::CTRL_VQ,
-                    Self::GUEST_ANNOUNCE => Self::CTRL_VQ,
-                    Self::MQ => Self::CTRL_VQ,
-                    Self::CTRL_MAC_ADDR => Self::CTRL_VQ,
-                    Self::RSC_EXT => Self::HOST_TSO4 | Self::HOST_TSO6,
-                    Self::RSS => Self::CTRL_VQ,
-                    _ => Self::empty(),
-                };
-                requirements.insert(requirement);
-            }
-
-            requirements
+        fn requirements_satisfied(&self) -> bool {
+            self.iter().all(|feature| match feature {
+                Self::GUEST_TSO4 => self.contains(Self::GUEST_CSUM),
+                Self::GUEST_TSO6 => self.contains(Self::GUEST_CSUM),
+                Self::GUEST_ECN => self.intersects(Self::GUEST_TSO4 | Self::GUEST_TSO6),
+                Self::GUEST_UFO => self.contains(Self::GUEST_CSUM),
+                Self::GUEST_USO4 => self.contains(Self::GUEST_CSUM),
+                Self::GUEST_USO6 => self.contains(Self::GUEST_CSUM),
+                Self::HOST_TSO4 => self.contains(Self::CSUM),
+                Self::HOST_TSO6 => self.contains(Self::CSUM),
+                Self::HOST_ECN => self.intersects(Self::HOST_TSO4 | Self::HOST_TSO6),
+                Self::HOST_UFO => self.contains(Self::CSUM),
+                Self::HOST_USO => self.contains(Self::CSUM),
+                Self::CTRL_RX => self.contains(Self::CTRL_VQ),
+                Self::CTRL_VLAN => self.contains(Self::CTRL_VQ),
+                Self::GUEST_ANNOUNCE => self.contains(Self::CTRL_VQ),
+                Self::MQ => self.contains(Self::CTRL_VQ),
+                Self::CTRL_MAC_ADDR => self.contains(Self::CTRL_VQ),
+                Self::RSC_EXT => self.intersects(Self::HOST_TSO4 | Self::HOST_TSO6),
+                Self::RSS => self.contains(Self::CTRL_VQ),
+                _ => true,
+            })
         }
 
-        fn recommendations(&self) -> Self {
-            let mut recommendations = Self::empty();
-
-            for feature in self.iter() {
-                let recommendation = match feature {
-                    Self::HASH_REPORT => Self::CTRL_VQ,
-                    Self::CTRL_RX_EXTRA => Self::CTRL_VQ,
-                    _ => Self::empty(),
-                };
-                recommendations.insert(recommendation);
-            }
-
-            recommendations
+        fn recommendations_satisfied(&self) -> bool {
+            self.iter().all(|feature| match feature {
+                Self::HASH_REPORT => self.contains(Self::CTRL_VQ),
+                Self::CTRL_RX_EXTRA => self.contains(Self::CTRL_VQ),
+                _ => true,
+            })
         }
     }
 }
