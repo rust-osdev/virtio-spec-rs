@@ -630,6 +630,10 @@ pub mod vsock {
             /// seqpacket socket type is supported.
             #[doc(alias = "VIRTIO_VSOCK_F_SEQPACKET")]
             const SEQPACKET = 1 << 1;
+
+            /// stream socket type is not implied.
+            #[doc(alias = "VIRTIO_VSOCK_F_NO_IMPLIED_STREAM")]
+            const NO_IMPLIED_STREAM = 1 << 2;
         }
     }
 
