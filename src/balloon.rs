@@ -1,3 +1,5 @@
+//! Traditional Memory Balloon Device
+
 use volatile::access::{ReadOnly, ReadWrite};
 use volatile_macro::VolatileFieldAccess;
 
