@@ -145,22 +145,22 @@ endian_bitflags! {
         /// This feature indicates
         /// that the driver passes extra data (besides identifying the virtqueue)
         /// in its device notifications.
-        /// See _Virtqueues / Driver notifications_ _Virtqueues / Driver notifications_.
+        /// See _Basic Facilities of a Virtio Device / Driver notifications_.
         #[doc(alias = "VIRTIO_F_NOTIFICATION_DATA")]
         const NOTIFICATION_DATA = 1 << 38;
 
         /// This feature indicates that the driver
         /// uses the data provided by the device as a virtqueue identifier in available
         /// buffer notifications.
-        /// As mentioned in section _Virtqueues / Driver notifications_, when the
+        /// As mentioned in section _Basic Facilities of a Virtio Device / Driver notifications_, when the
         /// driver is required to send an available buffer notification to the device, it
-        /// sends the virtqueue number to be notified. The method of delivering
+        /// sends the virtqueue index to be notified. The method of delivering
         /// notifications is transport specific.
         /// With the PCI transport, the device can optionally provide a per-virtqueue value
-        /// for the driver to use in driver notifications, instead of the virtqueue number.
+        /// for the driver to use in driver notifications, instead of the virtqueue index.
         /// Some devices may benefit from this flexibility by providing, for example,
         /// an internal virtqueue identifier, or an internal offset related to the
-        /// virtqueue number.
+        /// virtqueue index.
         ///
         /// This feature indicates the availability of such value. The definition of the
         /// data to be provided in driver notification and the delivery method is
@@ -174,6 +174,23 @@ endian_bitflags! {
         /// See _Basic Facilities of a Virtio Device / Virtqueues / Virtqueue Reset_.
         #[doc(alias = "VIRTIO_F_RING_RESET")]
         const RING_RESET = 1 << 40;
+
+        /// This feature indicates that the device exposes one or more
+        /// administration virtqueues.
+        /// At the moment this feature is only supported for devices using
+        /// _Virtio Transport Options / Virtio Over PCI Bus_
+        /// as the transport and is reserved for future use for
+        /// devices using other transports (see
+        /// _Basic Facilities of a Virtio Device / Feature Bits_ for
+        /// handling features reserved for future use.
+        #[doc(alias = "VIRTIO_F_ADMIN_VQ")]
+        const ADMIN_VQ = 1 << 41;
+
+        /// This feature indicates that the driver can
+        /// suspend the device by set the SUSPEND bit to 1.
+        /// See _Basic Facilities of a Virtio Device / Device Status Field_.
+        #[doc(alias = "VIRTIO_F_SUSPEND")]
+        const SUSPEND = 1 << 43;
     }
 }
 
@@ -245,6 +262,12 @@ macro_rules! feature_bits {
 
                 /// Device-independent Bit. See [`virtio::F::RING_RESET`](crate::F::RING_RESET).
                 const RING_RESET = $crate::F::RING_RESET.bits().to_ne();
+
+                /// Device-independent Bit. See [`virtio::F::ADMIN_VQ`](crate::F::ADMIN_VQ).
+                const ADMIN_VQ = $crate::F::ADMIN_VQ.bits().to_ne();
+
+                /// Device-independent Bit. See [`virtio::F::SUSPEND`](crate::F::SUSPEND).
+                const SUSPEND = $crate::F::SUSPEND.bits().to_ne();
             }
         }
 
@@ -416,8 +439,7 @@ pub mod net {
         /// Network Device Feature Bits
         #[doc(alias = "VIRTIO_NET_F")]
         pub struct F: le128 {
-            /// Device handles packets with partial checksum.   This
-            /// “checksum offload” is a common feature on modern network cards.
+            /// Device handles packets with partial checksum offload.
             #[doc(alias = "VIRTIO_NET_F_CSUM")]
             const CSUM = 1 << 0;
 
@@ -513,6 +535,23 @@ pub mod net {
             #[doc(alias = "VIRTIO_NET_F_CTRL_MAC_ADDR")]
             const CTRL_MAC_ADDR = 1 << 23;
 
+            /// Device can provide device-level statistics
+            /// to the driver through the control virtqueue.
+            #[doc(alias = "VIRTIO_NET_F_DEVICE_STATS")]
+            const DEVICE_STATS = 1 << 50;
+
+            /// Device supports inner header hash for encapsulated packets.
+            #[doc(alias = "VIRTIO_NET_F_HASH_TUNNEL")]
+            const HASH_TUNNEL = 1 << 51;
+
+            /// Device supports virtqueue notification coalescing.
+            #[doc(alias = "VIRTIO_NET_F_VQ_NOTF_COAL")]
+            const VQ_NOTF_COAL = 1 << 52;
+
+            /// Device supports notifications coalescing.
+            #[doc(alias = "VIRTIO_NET_F_NOTF_COAL")]
+            const NOTF_COAL = 1 << 53;
+
             /// Driver can receive USOv4 packets.
             #[doc(alias = "VIRTIO_NET_F_GUEST_USO4")]
             const GUEST_USO4 = 1 << 54;
@@ -556,6 +595,43 @@ pub mod net {
             /// Device reports speed and duplex.
             #[doc(alias = "VIRTIO_NET_F_SPEED_DUPLEX")]
             const SPEED_DUPLEX = 1 << 63;
+
+            /// Device supports multiple RSS contexts.
+            #[doc(alias = "VIRTIO_NET_F_RSS_CONTEXT")]
+            const RSS_CONTEXT = 1 << 64;
+
+            /// Driver can receive GSO packets
+            /// carried by a UDP tunnel.
+            #[doc(alias = "VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO")]
+            const GUEST_UDP_TUNNEL_GSO = 1 << 65;
+
+            /// Driver handles packets
+            /// carried by a UDP tunnel with partial csum for the outer header.
+            #[doc(alias = "VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM")]
+            const GUEST_UDP_TUNNEL_GSO_CSUM = 1 << 66;
+
+            /// Device can receive GSO packets
+            /// carried by a UDP tunnel.
+            #[doc(alias = "VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO")]
+            const HOST_UDP_TUNNEL_GSO = 1 << 67;
+
+            /// Device handles packets
+            /// carried by a UDP tunnel with partial csum for the outer header.
+            #[doc(alias = "VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO_CSUM")]
+            const HOST_UDP_TUNNEL_GSO_CSUM = 1 << 68;
+
+            /// Driver can provide the start of
+            /// `outer_nh_offset` value. Device gains advantage by not reading packet
+            /// to calculate outer network header offset.
+            #[doc(alias = "VIRTIO_NET_F_OUT_NET_HEADER")]
+            const OUT_NET_HEADER = 1 << 69;
+
+            /// Device supports inline IPsec processing.
+            /// `struct virtio_net_hdr` size expands upto field `sturct ipsec_resource_hdr`
+            /// when VIRTIO_NET_F_IPSEC is negotiated. When a device offers IPsec feature, it SHOULD
+            /// also offer the VIRTIO_NET_F_OUT_NET_HEADER feature.
+            #[doc(alias = "VIRTIO_NET_F_IPSEC")]
+            const IPSEC = 1 << 70;
         }
     }
 
@@ -568,18 +644,32 @@ pub mod net {
                 Self::GUEST_UFO => self.contains(Self::GUEST_CSUM),
                 Self::GUEST_USO4 => self.contains(Self::GUEST_CSUM),
                 Self::GUEST_USO6 => self.contains(Self::GUEST_CSUM),
+                Self::GUEST_UDP_TUNNEL_GSO => self.contains(
+                    Self::GUEST_TSO4 | Self::GUEST_TSO6 | Self::GUEST_USO4 | Self::GUEST_USO6,
+                ),
+                Self::GUEST_UDP_TUNNEL_GSO_CSUM => self.contains(Self::GUEST_UDP_TUNNEL_GSO),
                 Self::HOST_TSO4 => self.contains(Self::CSUM),
                 Self::HOST_TSO6 => self.contains(Self::CSUM),
                 Self::HOST_ECN => self.intersects(Self::HOST_TSO4 | Self::HOST_TSO6),
                 Self::HOST_UFO => self.contains(Self::CSUM),
                 Self::HOST_USO => self.contains(Self::CSUM),
+                Self::HOST_UDP_TUNNEL_GSO => {
+                    self.contains(Self::HOST_TSO4 | Self::HOST_TSO6 | Self::HOST_USO)
+                }
+                Self::HOST_UDP_TUNNEL_GSO_CSUM => self.contains(Self::HOST_UDP_TUNNEL_GSO),
                 Self::CTRL_RX => self.contains(Self::CTRL_VQ),
                 Self::CTRL_VLAN => self.contains(Self::CTRL_VQ),
                 Self::GUEST_ANNOUNCE => self.contains(Self::CTRL_VQ),
                 Self::MQ => self.contains(Self::CTRL_VQ),
                 Self::CTRL_MAC_ADDR => self.contains(Self::CTRL_VQ),
+                Self::NOTF_COAL => self.contains(Self::CTRL_VQ),
                 Self::RSC_EXT => self.intersects(Self::HOST_TSO4 | Self::HOST_TSO6),
                 Self::RSS => self.contains(Self::CTRL_VQ),
+                Self::VQ_NOTF_COAL => self.contains(Self::CTRL_VQ),
+                Self::HASH_TUNNEL => {
+                    self.contains(Self::CTRL_VQ) && self.intersects(Self::RSS | Self::HASH_REPORT)
+                }
+                Self::RSS_CONTEXT => self.contains(Self::CTRL_VQ | Self::RSS),
                 _ => true,
             })
         }
@@ -625,6 +715,10 @@ pub mod vsock {
             /// seqpacket socket type is supported.
             #[doc(alias = "VIRTIO_VSOCK_F_SEQPACKET")]
             const SEQPACKET = 1 << 1;
+
+            /// stream socket type is not implied.
+            #[doc(alias = "VIRTIO_VSOCK_F_NO_IMPLIED_STREAM")]
+            const NO_IMPLIED_STREAM = 1 << 2;
         }
     }
 
