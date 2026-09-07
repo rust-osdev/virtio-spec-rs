@@ -32,36 +32,36 @@ pub struct DeviceRegisters([le32; 0x100 / mem::size_of::<le32>()]);
 macro_rules! field_fn {
     (
         $(#[doc = $doc:literal])*
-        #[doc(alias = $alias:literal)]
+        $(#[doc(alias = $alias:literal)])*
         #[access($Access:ty)]
         $field:ident: le32,
     ) => {
         $(#[doc = $doc])*
-        #[doc(alias = $alias)]
+        $(#[doc(alias = $alias)])*
         fn $field(self) -> VolatilePtr<'a, le32, A::Restricted>
         where
             A: RestrictAccess<$Access>;
     };
     (
         $(#[doc = $doc:literal])*
-        #[doc(alias = $alias:literal)]
+        $(#[doc(alias = $alias:literal)])*
         #[access($Access:ty)]
         $field:ident: (),
     ) => {
         $(#[doc = $doc])*
-        #[doc(alias = $alias)]
+        $(#[doc(alias = $alias)])*
         fn $field(self) -> VolatilePtr<'a, (), A::Restricted>
         where
             A: RestrictAccess<$Access>;
     };
     (
         $(#[doc = $doc:literal])*
-        #[doc(alias = $alias:literal)]
+        $(#[doc(alias = $alias:literal)])*
         #[access($Access:ty)]
         $field:ident: $T:ty,
     ) => {
         $(#[doc = $doc])*
-        #[doc(alias = $alias)]
+        $(#[doc(alias = $alias)])*
         fn $field(self) -> OveralignedVolatilePtr<'a, $T, le32, A::Restricted>
         where
             A: RestrictAccess<$Access>;
@@ -120,7 +120,7 @@ macro_rules! device_register_impl {
         pub struct DeviceRegisters {
             $(
                 $(#[doc = $doc:literal])*
-                #[doc(alias = $alias:literal)]
+                $(#[doc(alias = $alias:literal)])*
                 #[offset($offset:literal)]
                 #[access($Access:ty)]
                 $field:ident: $T:tt,
@@ -132,7 +132,7 @@ macro_rules! device_register_impl {
             $(
                 field_fn! {
                     $(#[doc = $doc])*
-                    #[doc(alias = $alias)]
+                    $(#[doc(alias = $alias)])*
                     #[access($Access)]
                     $field: $T,
                 }
@@ -244,11 +244,10 @@ device_register_impl! {
 
         /// Virtual queue index
         ///
-        /// Writing to this register selects the virtual queue that the
-        /// following operations on `QueueNumMax`, `QueueNum`, `QueueReady`,
+        /// Writing to this register selects the virtqueue that the
+        /// following operations on `QueueSizeMax`, `QueueSize`, `QueueReady`,
         /// `QueueDescLow`, `QueueDescHigh`, `QueueDriverlLow`, `QueueDriverHigh`,
-        /// `QueueDeviceLow`, `QueueDeviceHigh` and `QueueReset` apply to. The index
-        /// number of the first queue is zero (0x0).
+        /// `QueueDeviceLow`, `QueueDeviceHigh` and `QueueReset` apply to.
         #[doc(alias = "QueueSel")]
         #[offset(0x030)]
         #[access(WriteOnly)]
@@ -260,10 +259,13 @@ device_register_impl! {
         /// elements) of the queue the device is ready to process or
         /// zero (0x0) if the queue is not available. This applies to the
         /// queue selected by writing to `QueueSel`.
+        ///
+        /// Note: `QueueSizeMax` was previously known as `QueueNumMax`.
+        #[doc(alias = "QueueSizeMax")]
         #[doc(alias = "QueueNumMax")]
         #[offset(0x034)]
         #[access(ReadOnly)]
-        queue_num_max: le16,
+        queue_size_max: le16,
 
         /// Virtual queue size
         ///
@@ -271,15 +273,18 @@ device_register_impl! {
         /// Writing to this register notifies the device what size of the
         /// queue the driver will use. This applies to the queue selected by
         /// writing to `QueueSel`.
+        ///
+        /// Note: `QueueSize` was previously known as `QueueNum`.
+        #[doc(alias = "QueueSize")]
         #[doc(alias = "QueueNum")]
         #[offset(0x038)]
         #[access(WriteOnly)]
-        queue_num: le16,
+        queue_size: le16,
 
         /// Virtual queue ready bit
         ///
         /// Writing one (0x1) to this register notifies the device that it can
-        /// execute requests from this virtual queue. Reading from this register
+        /// execute requests from this virtqueue. Reading from this register
         /// returns the last value written to it. Both read and write
         /// accesses apply to the queue selected by writing to `QueueSel`.
         #[doc(alias = "QueueReady")]
@@ -601,7 +606,7 @@ virtio_bitflags! {
     pub struct InterruptStatus: u8 {
         /// Used Buffer Notification
         ///
-        /// The interrupt was asserted because the device has used a buffer in at least one of the active virtual queues.
+        /// The interrupt was asserted because the device has used a buffer in at least one of the active virtqueues.
         const USED_BUFFER_NOTIFICATION = 1 << 0;
 
         /// Configuration Change Notification
