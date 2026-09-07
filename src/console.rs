@@ -1,6 +1,6 @@
 //! Console Device
 
-use num_enum::{FromPrimitive, IntoPrimitive};
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 use volatile::access::ReadOnly;
 use volatile_macro::VolatileFieldAccess;
 
@@ -47,17 +47,8 @@ pub struct Control {
 }
 
 /// Event
-///
-/// <div class="warning">
-///
-/// This enum is not ABI-compatible with it's corresponding field.
-/// Use [`Device::from`] for converting from an integer.
-///
-/// </div>
-///
-/// [`Device::from`]: Device#impl-From<u16>-for-Device
 #[doc(alias = "VIRTIO_CONSOLE")]
-#[derive(IntoPrimitive, FromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
+#[derive(IntoPrimitive, TryFromPrimitive, PartialEq, Eq, Clone, Copy, Debug)]
 #[non_exhaustive]
 #[repr(u16)]
 pub enum Device {
@@ -113,9 +104,6 @@ pub enum Device {
     /// This control command is immediately followed by the UTF-8 name of the port for identification within the guest (without a NUL terminator).
     #[doc(alias = "VIRTIO_CONSOLE_PORT_NAME")]
     PortName = 7,
-
-    #[num_enum(catch_all)]
-    Unknown(u16),
 }
 
 /// Resize Message Layout
