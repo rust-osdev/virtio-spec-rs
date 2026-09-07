@@ -5,8 +5,9 @@ use crate::le32;
 /// Notification Data.
 #[bitfield(u32, repr = le32, from = le32::from_ne, into = le32::to_ne)]
 pub struct NotificationData {
-    /// VQ number to be notified.
-    pub vqn: u16,
+    /// Either virtqueue index or device supplied queue notification config data corresponding to a virtqueue.
+    #[doc(alias = "vq_index")]
+    pub vq_notif_config_data: u16,
 
     /// Offset
     /// within the ring where the next available ring entry
