@@ -32,36 +32,36 @@ pub struct DeviceRegisters([le32; 0x100 / mem::size_of::<le32>()]);
 macro_rules! field_fn {
     (
         $(#[doc = $doc:literal])*
-        #[doc(alias = $alias:literal)]
+        $(#[doc(alias = $alias:literal)])*
         #[access($Access:ty)]
         $field:ident: le32,
     ) => {
         $(#[doc = $doc])*
-        #[doc(alias = $alias)]
+        $(#[doc(alias = $alias)])*
         fn $field(self) -> VolatilePtr<'a, le32, A::Restricted>
         where
             A: RestrictAccess<$Access>;
     };
     (
         $(#[doc = $doc:literal])*
-        #[doc(alias = $alias:literal)]
+        $(#[doc(alias = $alias:literal)])*
         #[access($Access:ty)]
         $field:ident: (),
     ) => {
         $(#[doc = $doc])*
-        #[doc(alias = $alias)]
+        $(#[doc(alias = $alias)])*
         fn $field(self) -> VolatilePtr<'a, (), A::Restricted>
         where
             A: RestrictAccess<$Access>;
     };
     (
         $(#[doc = $doc:literal])*
-        #[doc(alias = $alias:literal)]
+        $(#[doc(alias = $alias:literal)])*
         #[access($Access:ty)]
         $field:ident: $T:ty,
     ) => {
         $(#[doc = $doc])*
-        #[doc(alias = $alias)]
+        $(#[doc(alias = $alias)])*
         fn $field(self) -> OveralignedVolatilePtr<'a, $T, le32, A::Restricted>
         where
             A: RestrictAccess<$Access>;
@@ -120,7 +120,7 @@ macro_rules! device_register_impl {
         pub struct DeviceRegisters {
             $(
                 $(#[doc = $doc:literal])*
-                #[doc(alias = $alias:literal)]
+                $(#[doc(alias = $alias:literal)])*
                 #[offset($offset:literal)]
                 #[access($Access:ty)]
                 $field:ident: $T:tt,
@@ -132,7 +132,7 @@ macro_rules! device_register_impl {
             $(
                 field_fn! {
                     $(#[doc = $doc])*
-                    #[doc(alias = $alias)]
+                    $(#[doc(alias = $alias)])*
                     #[access($Access)]
                     $field: $T,
                 }
