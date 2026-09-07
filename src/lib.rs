@@ -64,7 +64,7 @@
 //! | Device Type                       | Available | Module        |
 //! | --------------------------------- | --------- | ------------- |
 //! | Network Device                    | ✅        | [`net`]       |
-//! | Block Device                      | ❌        |               |
+//! | Block Device                      | ✅        | [`blk`]       |
 //! | Console Device                    | ✅        | [`console`]   |
 //! | Entropy Device                    | ✅        | None required |
 //! | Traditional Memory Balloon Device | ✅        | [`balloon`]   |
@@ -95,6 +95,7 @@ mod bitflags;
 #[macro_use]
 pub mod volatile;
 pub mod balloon;
+pub mod blk;
 pub mod console;
 #[cfg(any(feature = "mmio", feature = "pci"))]
 mod driver_notifications;
