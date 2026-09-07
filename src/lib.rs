@@ -186,122 +186,184 @@ pub enum Id {
     /// reserved (invalid)
     Reserved = 0,
 
-    /// network card
+    /// network device
+    #[doc(alias = "VIRTIO_ID_NET")]
     Net = 1,
 
     /// block device
+    #[doc(alias = "VIRTIO_ID_BLOCK")]
     Block = 2,
 
     /// console
+    #[doc(alias = "VIRTIO_ID_CONSOLE")]
     Console = 3,
 
     /// entropy source
+    #[doc(alias = "VIRTIO_ID_RNG")]
     Rng = 4,
 
     /// memory ballooning (traditional)
+    #[doc(alias = "VIRTIO_ID_BALLOON")]
     Balloon = 5,
 
     /// ioMemory
-    IoMem = 6,
+    #[doc(alias = "VIRTIO_ID_IOMEM")]
+    Iomem = 6,
 
     /// rpmsg
+    #[doc(alias = "VIRTIO_ID_RPMSG")]
     Rpmsg = 7,
 
     /// SCSI host
+    #[doc(alias = "VIRTIO_ID_SCSI")]
     Scsi = 8,
 
     /// 9P transport
+    #[doc(alias = "VIRTIO_ID_9P")]
     NineP = 9,
 
     /// mac80211 wlan
+    #[doc(alias = "VIRTIO_ID_MAC80211_WLAN")]
     Mac80211Wlan = 10,
 
     /// rproc serial
+    #[doc(alias = "VIRTIO_ID_RPROC_SERIAL")]
     RprocSerial = 11,
 
     /// virtio CAIF
+    #[doc(alias = "VIRTIO_ID_CAIF")]
     Caif = 12,
 
     /// memory balloon
+    #[doc(alias = "VIRTIO_ID_MEMORY_BALLOON")]
     MemoryBalloon = 13,
 
     /// GPU device
+    #[doc(alias = "VIRTIO_ID_GPU")]
     Gpu = 16,
 
-    /// Timer/Clock device
+    /// RTC (Real Time Clock) device
+    #[doc(alias = "VIRTIO_ID_CLOCK")]
     Clock = 17,
 
     /// Input device
+    #[doc(alias = "VIRTIO_ID_INPUT")]
     Input = 18,
 
     /// Socket device
+    #[doc(alias = "VIRTIO_ID_VSOCK")]
     Vsock = 19,
 
     /// Crypto device
+    #[doc(alias = "VIRTIO_ID_CRYPTO")]
     Crypto = 20,
 
     /// Signal Distribution Module
+    #[doc(alias = "VIRTIO_ID_SIGNAL_DIST")]
     SignalDist = 21,
 
     /// pstore device
+    #[doc(alias = "VIRTIO_ID_PSTORE")]
     Pstore = 22,
 
     /// IOMMU device
+    #[doc(alias = "VIRTIO_ID_IOMMU")]
     Iommu = 23,
 
     /// Memory device
+    #[doc(alias = "VIRTIO_ID_MEM")]
     Mem = 24,
 
-    /// Audio device
+    /// Sound device
+    #[doc(alias = "VIRTIO_ID_SOUND")]
     Sound = 25,
 
     /// file system device
+    #[doc(alias = "VIRTIO_ID_FS")]
     Fs = 26,
 
     /// PMEM device
+    #[doc(alias = "VIRTIO_ID_PMEM")]
     Pmem = 27,
 
     /// RPMB device
+    #[doc(alias = "VIRTIO_ID_RPMB")]
     Rpmb = 28,
 
     /// mac80211 hwsim wireless simulation device
+    #[doc(alias = "VIRTIO_ID_MAC80211_HWSIM")]
     Mac80211Hwsim = 29,
 
     /// Video encoder device
+    #[doc(alias = "VIRTIO_ID_VIDEO_ENCODER")]
     VideoEncoder = 30,
 
     /// Video decoder device
+    #[doc(alias = "VIRTIO_ID_VIDEO_DECODER")]
     VideoDecoder = 31,
 
     /// SCMI device
+    #[doc(alias = "VIRTIO_ID_SCMI")]
     Scmi = 32,
 
     /// NitroSecureModule
+    #[doc(alias = "VIRTIO_ID_NITRO_SEC_MOD")]
     NitroSecMod = 33,
 
     /// I2C adapter
+    #[doc(alias = "VIRTIO_ID_I2C_ADAPTER")]
     I2cAdapter = 34,
 
     /// Watchdog
+    #[doc(alias = "VIRTIO_ID_WATCHDOG")]
     Watchdog = 35,
 
     /// CAN device
+    #[doc(alias = "VIRTIO_ID_CAN")]
     Can = 36,
 
     /// Parameter Server
+    #[doc(alias = "VIRTIO_ID_PARAM_SERV")]
     ParamServ = 38,
 
     /// Audio policy device
+    #[doc(alias = "VIRTIO_ID_AUDIO_POLICY")]
     AudioPolicy = 39,
 
     /// Bluetooth device
+    #[doc(alias = "VIRTIO_ID_BT")]
     Bt = 40,
 
     /// GPIO device
+    #[doc(alias = "VIRTIO_ID_GPIO")]
     Gpio = 41,
 
     /// RDMA device
+    #[doc(alias = "VIRTIO_ID_RDMA")]
     Rdma = 42,
+
+    /// Camera device
+    Camera = 43,
+
+    /// ISM device
+    Ism = 44,
+
+    /// SPI controller
+    #[doc(alias = "VIRTIO_ID_SPI")]
+    Spi = 45,
+
+    /// TEE device
+    Tee = 46,
+
+    /// CPU balloon device
+    CpuBalloon = 47,
+
+    /// Media device
+    #[doc(alias = "VIRTIO_ID_MEDIA")]
+    Media = 48,
+
+    /// USB controller
+    Usb = 49,
 
     /// Unknown device
     #[num_enum(catch_all)]
