@@ -6,8 +6,7 @@ on:
   merge_group:
 
 env:
-  RUSTFLAGS: -Dwarnings
-  RUSTDOCFLAGS: -Dwarnings
+  CARGO_BUILD_WARNINGS: deny
 
 jobs:
   check:
@@ -54,8 +53,15 @@ jobs:
         with:
           components: miri
       - run: cargo miri setup
+        env:
+          # FIXME: Remove once Miri's sysroot does not throw warnings anymore
+          CARGO_BUILD_WARNINGS: warn
       - run: cargo miri test --features alloc,mmio,pci,zerocopy
       - run: cargo miri test --all-features
+        env:
+          # FIXME: Remove once we have removed allocator-api2 when allocator-api is stable.
+          # Until then, we have an unavoidable `cargo::unused_dependencies` warning when we enable the nightly feature.
+          CARGO_BUILD_WARNINGS: warn
 
   semver-checks:
     name: Semver checks
