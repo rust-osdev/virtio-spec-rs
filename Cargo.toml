@@ -1,6 +1,6 @@
 [package]
 name = "virtio-spec"
-version = "0.3.2"
+version = "0.4.0"
 edition = "2024"
 description = "Definitions from the Virtual I/O Device (VIRTIO) specification."
 repository = "https://github.com/rust-osdev/virtio-spec-rs"
