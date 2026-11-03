@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
       - uses: taiki-e/install-action@cargo-hack
       - run: cargo hack check --feature-powerset --no-dev-deps
 
@@ -23,7 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
+        with:
+          components: clippy
       - run: cargo clippy --features alloc,mmio,pci,zerocopy
 
   doc:
@@ -31,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
       - run: cargo doc --features alloc,mmio,pci,zerocopy
 
   fmt:
@@ -71,5 +73,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
       - run: cargo test --features alloc,mmio,pci,zerocopy
