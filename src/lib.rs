@@ -29,9 +29,8 @@
 //!
 //! This crate has the following Cargo features:
 //!
-//! - `alloc` enables allocating unsized structs such as [`virtq::Avail`] and [`virtq::Used`] via the [`allocator_api2`] crate.
+//! - `alloc` enables allocating unsized structs such as [`virtq::Avail`] and [`virtq::Used`] via the allocator API.
 //! - `mmio` enables the [`mmio`] module for Virtio Over MMIO.
-//! - `nightly` enables nightly-only functionality.
 //! - `pci` enables the [`pci`] module for Virtio Over PCI via the [`pci_types`] crate.
 //! - `zerocopy` derives the following traits for most structs:
 //!   - [`zerocopy::KnownLayout`]
@@ -85,7 +84,6 @@
 
 #![cfg_attr(not(test), no_std)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
-#![cfg_attr(feature = "nightly", feature(allocator_api))]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
