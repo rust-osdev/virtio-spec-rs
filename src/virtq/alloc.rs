@@ -1,14 +1,5 @@
-use ::alloc::alloc::handle_alloc_error;
-#[cfg(feature = "nightly")]
-use ::alloc::{
-    alloc::{AllocError, Allocator, Global},
-    boxed::Box,
-};
-#[cfg(not(feature = "nightly"))]
-use allocator_api2::{
-    alloc::{AllocError, Allocator, Global},
-    boxed::Box,
-};
+use ::alloc::alloc::{AllocError, Allocator, Global, handle_alloc_error};
+use ::alloc::boxed::Box;
 
 use super::*;
 

@@ -14,16 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
       - uses: taiki-e/install-action@cargo-hack
-      - run: cargo hack check --feature-powerset --exclude-features nightly --no-dev-deps
+      - run: cargo hack check --feature-powerset --no-dev-deps
 
   clippy:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
+        with:
+          components: clippy
       - run: cargo clippy --features alloc,mmio,pci,zerocopy
 
   doc:
@@ -31,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
       - run: cargo doc --features alloc,mmio,pci,zerocopy
 
   fmt:
@@ -58,10 +60,6 @@ jobs:
           CARGO_BUILD_WARNINGS: warn
       - run: cargo miri test --features alloc,mmio,pci,zerocopy
       - run: cargo miri test --all-features
-        env:
-          # FIXME: Remove once we have removed allocator-api2 when allocator-api is stable.
-          # Until then, we have an unavoidable `cargo::unused_dependencies` warning when we enable the nightly feature.
-          CARGO_BUILD_WARNINGS: warn
 
   semver-checks:
     name: Semver checks
@@ -75,5 +73,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@beta
       - run: cargo test --features alloc,mmio,pci,zerocopy

@@ -13,7 +13,6 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
-allocator-api2 = { version = "0.4", default-features = false, features = ["alloc"], optional = true }
 bitfield-struct = "0.13"
 bitflags = "2"
 endian-num = { version = "0.2", features = ["bitflags", "linux-types"] }
@@ -25,9 +24,8 @@ zerocopy = { version = "0.8", optional = true, default-features = false }
 zerocopy-derive = { version = "0.8", optional = true }
 
 [features]
-alloc = ["dep:allocator-api2"]
+alloc = []
 mmio = []
-nightly = []
 pci = ["dep:pci_types"]
 zerocopy = ["dep:zerocopy", "dep:zerocopy-derive", "endian-num/zerocopy"]
 
